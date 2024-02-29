@@ -3,12 +3,13 @@ name: deploy-book
 # Based on:
 # https://jupyterbook.org/en/stable/publish/gh-pages.html
 
+# Try: run on push in a branch: deploy a version for that branch
+
 # Run this when the master or main branch changes
 on:
   push:
     branches:
-    - master
-    - main
+    - '*'
     # If your git repository has the Jupyter Book within some-subfolder next to
     # unrelated files, you can make this run only if a file within that specific
     # folder has been modified.
@@ -37,26 +38,25 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    # (optional) Cache your executed notebooks between runs
-    # if you have config:
-    # execute:
-    #   execute_notebooks: cache
-    - name: cache executed notebooks
-      uses: actions/cache@v3
-      with:
-        path: _build/.jupyter_cache
-        key: jupyter-book-cache-${{ hashFiles('requirements.txt') }}
-
     # Build the book
-    - name: Build the book
+    - name: Build the book from main branch
       run: |
+        git checkout main
         jupyter-book build book/
+        mkdir -p final/
+        mv book/_build/html final/main
+      
+    - name: Build the book from dev branch
+      run: |
+        git checkout dev
+        jupyter-book build book/
+        mv book/_build/html final/dev
 
     # Upload the book's HTML as an artifact
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: "book/_build/html"
+        path: "final/"
 
     # Deploy the book's HTML to GitHub Pages
     - name: Deploy to GitHub Pages
