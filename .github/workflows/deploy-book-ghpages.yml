@@ -42,8 +42,8 @@ jobs:
     - name: Build the book from main branch
       run: |
         jupyter-book build book/
-        mkdir -p final/
-        mv book/_build/html final/main
+        mkdir -p $GITHUB_WORKSPACE/final/
+        mv book/_build/html $GITHUB_WORKSPACE/final/main
 
     - uses: actions/checkout@v4
       with:
@@ -52,13 +52,13 @@ jobs:
     - name: Build the book from dev branch
       run: |
         jupyter-book build book/
-        mv book/_build/html final/dev
+        mv book/_build/html $GITHUB_WORKSPACE/final/dev
 
     # Upload the book's HTML as an artifact
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: "final/"
+        path: "$GITHUB_WORKSPACE/final/"
 
     # Deploy the book's HTML to GitHub Pages
     - name: Deploy to GitHub Pages
