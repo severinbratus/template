@@ -41,14 +41,15 @@ jobs:
     # Build the book
     - name: Build the book from main branch
       run: |
-        git checkout main
         jupyter-book build book/
         mkdir -p final/
         mv book/_build/html final/main
       
     - name: Build the book from dev branch
+      uses: actions/checkout@v4
+        with:
+          ref: dev
       run: |
-        git checkout dev
         jupyter-book build book/
         mv book/_build/html final/dev
 
