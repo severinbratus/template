@@ -44,11 +44,12 @@ jobs:
         jupyter-book build book/
         mkdir -p final/
         mv book/_build/html final/main
+
+    - uses: actions/checkout@v4
+      with:
+        ref: dev
       
     - name: Build the book from dev branch
-      uses: actions/checkout@v4
-        with:
-          ref: dev
       run: |
         jupyter-book build book/
         mv book/_build/html final/dev
