@@ -51,6 +51,7 @@ jobs:
         path: "book/_build/html"
 
   deploy-book-main-pages:
+    needs: build-book-main
     runs-on: ubuntu-latest
     permissions:
       pages: write
