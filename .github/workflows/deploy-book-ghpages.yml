@@ -31,7 +31,8 @@ jobs:
         branch: ["main", "draft"]
     steps:
     - uses: actions/checkout@v4
-      ref: ${{ matrix.branch }}
+      with:
+        ref: ${{ matrix.branch }}
 
     # Install dependencies
     - name: Set up Python 3.11
@@ -52,7 +53,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ format("html-{0}", matrix.branch) }}
+        name: ${{ format('html-{0}', matrix.branch) }}
         path: "book/_build/html"
 
   deploy-books:
