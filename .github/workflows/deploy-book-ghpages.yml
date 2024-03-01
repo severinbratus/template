@@ -67,7 +67,6 @@ jobs:
 
     - uses: actions/upload-pages-artifact@v3
       with:
-        name: "html-final"
         path: "final"
     
     - name: Deploy to GitHub Pages
