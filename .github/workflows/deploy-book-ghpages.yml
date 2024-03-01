@@ -25,7 +25,7 @@ jobs:
       pages: write
       id-token: write
     strategy:
-      # If a job fails, we may still want to deploy some pages
+      # If one branch fails, we may still want to deploy the other
       fail-fast: false
       matrix:
         branch: ["main", "draft"]
@@ -36,7 +36,7 @@ jobs:
 
     # Install dependencies
     - name: Set up Python 3.11
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: 3.11
 
@@ -53,7 +53,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ format('html-{0}', matrix.branch) }}
+        name: ${{ matrix.branch }}
         path: "book/_build/html"
 
   deploy-books:
