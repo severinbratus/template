@@ -20,13 +20,13 @@ on:
 
 # This job installs dependencies, builds the book, and pushes it to `gh-pages`
 jobs:
-  deploy-book:
+  build-book-main:
     runs-on: ubuntu-latest
     permissions:
       pages: write
       id-token: write
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     # Install dependencies
     - name: Set up Python 3.11
@@ -42,28 +42,37 @@ jobs:
     - name: Build the book from main branch
       run: |
         jupyter-book build book/
-        mkdir -p $GITHUB_WORKSPACE/final/
-        mv book/_build/html $GITHUB_WORKSPACE/final/main
-
-    - uses: actions/checkout@v4
-      with:
-        ref: dev
-      
-    - name: Build the book from dev branch
-      run: |
-        jupyter-book build book/
-        mv book/_build/html $GITHUB_WORKSPACE/final/dev
 
     # Upload the book's HTML as an artifact
     - name: Upload artifact
-      uses: actions/upload-pages-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-        path: "$GITHUB_WORKSPACE/final/"
+        name: "html-main"
+        path: "book/_build/html"
 
-    # Deploy the book's HTML to GitHub Pages
+  deploy-book-main-pages:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+    - run: |
+        mkdir final/
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: "html-main"
+        path: "final/main"
+
+    - uses: actions/upload-pages-artifact@v4
+      with:
+        name: "html-final"
+        path: "final"
+    
     - name: Deploy to GitHub Pages
       id: deployment
-      uses: actions/deploy-pages@v2
+      uses: actions/deploy-pages@v4
+
 
 permissions:
   contents: read
