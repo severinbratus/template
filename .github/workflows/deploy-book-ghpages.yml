@@ -80,9 +80,9 @@ jobs:
           ln -s main final/book
         fi
 
-    - name: Load root index.html to redirect to `book/`
+    - name: Load root page to redirect to `book/`
       run: |
-        cp index.html final/        
+        cp redirect.html final/index.html
 
     - name: Upload final Pages artifact
       uses: actions/upload-pages-artifact@v3
