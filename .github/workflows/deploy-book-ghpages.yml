@@ -64,6 +64,8 @@ jobs:
       pages: write
       id-token: write
     steps:
+    - uses: actions/checkout@v4
+
     - run: |
         mkdir final/
 
@@ -77,6 +79,10 @@ jobs:
         if test -d final/main; then
           ln -s main final/book
         fi
+
+    - name: Load root index.html to redirect to `book/`
+      run: |
+        cp index.html final/        
 
     - name: Upload final Pages artifact
       uses: actions/upload-pages-artifact@v3
