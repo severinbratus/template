@@ -19,6 +19,17 @@ on:
   workflow_dispatch:
 
 jobs:
+  get-branches:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: List remote branches
+      run: git branch -r
+
   build-books:
     runs-on: ubuntu-latest
     permissions:
