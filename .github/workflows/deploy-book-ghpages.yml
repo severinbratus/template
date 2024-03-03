@@ -32,7 +32,7 @@ jobs:
     - id: set-matrix
       name: Collect all remote branch names to matrix
       run: |
-        branches=(git branch -r | sed 's,\s*origin/,,g' | jq -Rn '[inputs]')
+        branches=$(git branch -r | sed 's,\s*origin/,,g' | jq -Rn '[inputs]')
         echo "matrix={\"branch\":$(echo $branches)}" >> $GITHUB_OUTPUT
 
   build-books:
