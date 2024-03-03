@@ -21,17 +21,23 @@ on:
 jobs:
   get-branches:
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     permissions:
       contents: read
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - name: List remote branches
-      run: git branch -r
+    - id: set-matrix
+      name: Collect all remote branch names to matrix
+      run: |
+        branches=(git branch -r | sed 's,\s*origin/,,g' | jq -Rn '[inputs]')
+        echo "matrix={\"branch\":$(echo $branches)}" >> $GITHUB_OUTPUT
 
   build-books:
     runs-on: ubuntu-latest
+    needs: get-branches
     permissions:
       pages: write
       id-token: write
@@ -39,7 +45,7 @@ jobs:
       # If one branch fails, we may still want to deploy the other
       fail-fast: false
       matrix:
-        branch: ["main", "draft"]
+        branch: ${{ fromJson(needs.get-branches.outputs.matrix) }}
     steps:
     - name: Checkout to branch
       uses: actions/checkout@v4
