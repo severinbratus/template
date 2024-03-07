@@ -3,9 +3,7 @@ name: deploy-book
 # Based on:
 # https://jupyterbook.org/en/stable/publish/gh-pages.html
 
-# Try: run on push in a branch: deploy a version for that branch
-
-# Run this when the master or main branch changes
+# Run on a push to any branch, then deploy books from all branches.
 on:
   push:
     branches:
@@ -91,15 +89,14 @@ jobs:
       with:
         path: "final/"
 
-    - name: Symlink `book` to `main`
+    - name: Move primary book to root, fail if names conflict
+      timeout-minutes: 1
       run: |
-        if test -d final/main; then
-          ln -s main final/book
-        fi
-
-    - name: Load root page to redirect to `book/`
-      run: |
-        cp redirect.html final/index.html
+        # -i leads to a prompt in case of conflict, => a timeout
+        mv -iv final/main/* final/
+        rmdir final/main
+        # symlink main to be accessible at /main
+        ln -s . final/main
 
     - name: Upload final Pages artifact
       uses: actions/upload-pages-artifact@v3
