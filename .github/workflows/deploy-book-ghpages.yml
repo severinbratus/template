@@ -94,10 +94,8 @@ jobs:
       run: |
         GLOBIGNORE=".:.."
         # -i leads to a prompt in case of conflict, => a timeout
-        mv -iv final/main/* final/
-        rmdir final/main
-        # symlink main to be accessible at /main
-        ln -s . final/main
+        cp -irv final/main/* final/
+        ls -a final/
 
     - name: Upload final Pages artifact
       uses: actions/upload-pages-artifact@v3
