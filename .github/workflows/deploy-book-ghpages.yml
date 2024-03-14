@@ -55,7 +55,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: "book/_build/html"
-        key: ${{ hashFiles('**') }}
+        key: html-build-${{ hashFiles('book/**', 'figures/**', 'requirements.txt') }}
 
     - if: ${{ steps.cache-html.outputs.cache-hit != 'true' }}
       name: Set up Python 3.11
