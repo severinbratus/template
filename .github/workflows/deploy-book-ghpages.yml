@@ -3,6 +3,9 @@ name: deploy-book
 # Based on:
 # https://jupyterbook.org/en/stable/publish/gh-pages.html
 
+env:
+  PRIMARY_BRANCH: main
+
 # Run on a push to any branch, then deploy books from all branches.
 on:
   push:
@@ -104,7 +107,7 @@ jobs:
       run: |
         GLOBIGNORE=".:.."
         # -i leads to a prompt in case of conflict, => a timeout
-        cp -irv final/main/* final/
+        cp -irv final/$PRIMARY_BRANCH/* final/
         ls -a final/
 
     - name: Upload final Pages artifact
