@@ -17,14 +17,12 @@ docutils==0.17.1
 # now list the packages (and the respective url) you wish to download from the GitLab package registry
 
 # toml file is here: https://gitlab.tudelft.nl/interactivetextbooks-citg/extensions/tud-citg-jb-stack/-/blob/main/pyproject.toml?ref_type=heads
---index-url https://gitlab.tudelft.nl/api/v4/projects/13957/packages/pypi/simple
-citg-jb-stack
+--extra-index-url https://gitlab.tudelft.nl/api/v4/projects/13957/packages/pypi/simple
+teachbooks
 --extra-index-url https://gitlab.tudelft.nl/api/v4/projects/17983/packages/pypi/simple
 jupyterbook_patches ~= 0.1.3
 --extra-index-url https://gitlab.tudelft.nl/api/v4/projects/11239/packages/pypi/simple
 sphinx-thebe == 0.2.1000
---extra-index-url https://gitlab.tudelft.nl/api/v4/projects/13957/packages/pypi/simple
-teachbooks ~= 0.0.4
 
 # lastly any packages you wish to download directly from a Git repository
 download_link_replacer @ git+https://gitlab.tudelft.nl/mude/sphinx-download-link-replacer@dlr-0.1.2
