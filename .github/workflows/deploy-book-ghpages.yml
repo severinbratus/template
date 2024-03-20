@@ -76,6 +76,7 @@ jobs:
     - if: ${{ steps.cache-html.outputs.cache-hit != 'true' }}
       name: Preprocess & build the book from branch
       run: |
+        echo $PATH
         pip install --user teachbooks
         teachbooks --publish --process-only book/
         jupyter-book build book/
