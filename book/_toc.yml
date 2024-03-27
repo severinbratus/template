@@ -6,7 +6,7 @@ parts:
     - file: reliability-component/overview.md
       sections:
       - file: reliability-component/contamination.ipynb
-# START REMOVE-FROM-PUBLISH
     - file: references.md
+# START REMOVE-FROM-PUBLISH
     - file: credits.md
 # END REMOVE-FROM-PUBLISH
