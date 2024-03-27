@@ -6,7 +6,7 @@ name: deploy-book
 env:
   PRIMARY_BRANCH: main
   BRANCH_ALIASES: '{"draft": "second"}'
-  BRANCHES_TO_DEPLOY: '[second]'
+  BRANCHES_TO_DEPLOY: '["second"]'
 
 # Run on a push to any branch, then deploy books from all branches.
 on:
