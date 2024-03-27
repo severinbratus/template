@@ -40,7 +40,7 @@ jobs:
         else
           branches=$BRANCHES_TO_DEPLOY
         fi
-        echo branches
+        echo $branches
         echo "branches=$(echo $branches)" >> $GITHUB_OUTPUT
 
   build-books:
