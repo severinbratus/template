@@ -80,6 +80,7 @@ jobs:
         pip install --user teachbooks --extra-index-url https://gitlab.tudelft.nl/api/v4/projects/13957/packages/pypi/simple
         cat book/_toc.yml
         teachbooks build --publish --process-only book/
+        mv book/.psorbooks/_toc.yml book/.psorbooks/_config.yml book/
         cat book/_toc.yml
         jupyter-book build book/
 
