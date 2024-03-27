@@ -6,6 +6,7 @@ name: deploy-book
 env:
   PRIMARY_BRANCH: main
   BRANCH_ALIASES: '{"draft": "second"}'
+  # BRANCHES_TO_DEPLOY: '[second, main]'
 
 # Run on a push to any branch, then deploy books from all branches.
 on:
@@ -32,9 +33,14 @@ jobs:
       with:
         fetch-depth: 0
     - id: set-branches
-      name: Collect all remote branch names for the matrix
+      name: Set branches
       run: |
-        branches=$(git branch -r | sed 's,\s*origin/,,g' | jq -Rn '[inputs]')
+        if [[ -z $BRANCHES_TO_DEPLOY ]]; then
+          branches=$(git branch -r | sed 's,\s*origin/,,g' | jq -Rn '[inputs]')
+        else
+          branches=$BRANCHES_TO_DEPLOY
+        fi
+        echo branches
         echo "branches=$(echo $branches)" >> $GITHUB_OUTPUT
 
   build-books:
