@@ -4,9 +4,9 @@ parts:
   - caption: Contents
     chapters:
     - file: reliability-component/overview.md
-# START REMOVE-FROM-PUBLISH
       sections:
       - file: reliability-component/contamination.ipynb
-# END REMOVE-FROM-PUBLISH
+# START REMOVE-FROM-PUBLISH
     - file: references.md
     - file: credits.md
+# END REMOVE-FROM-PUBLISH
