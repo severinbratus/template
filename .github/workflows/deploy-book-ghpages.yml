@@ -130,9 +130,9 @@ jobs:
         echo $BRANCH_ALIASES | jq -r 'to_entries[] | [.key, .value] | @tsv' |
         while IFS=$'\t' read -r key value; do
           # If the target branch is to be deployed, make symlink to it.
-          echo $BRANCHES_TO_DEPLOY | jq -r '@tsv'
-          echo $BRANCHES_TO_DEPLOY | jq -r '@tsv' | grep "^$value$"
-          echo $BRANCHES_TO_DEPLOY | jq -r '@tsv' | grep "^$value$" && ln -s $value final/$key || :;
+          if echo $BRANCHES_TO_DEPLOY | jq -r '@tsv' | grep "^$value$"; then
+            ln -s $value final/$key
+          fi
         done
 
     - name: Upload final Pages artifact
