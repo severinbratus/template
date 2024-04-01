@@ -130,7 +130,7 @@ jobs:
         while IFS=$'\t' read -r key value; do
           # If the target branch is to be deployed, make symlink to it.
           echo $BRANCHES_TO_DEPLOY | jq -r '@tsv' | grep "^$value$"
-          echo $BRANCHES_TO_DEPLOY | jq -r '@tsv' | grep "^$value$" && ln -s $value final/$key;
+          echo $BRANCHES_TO_DEPLOY | jq -r '@tsv' | grep "^$value$" && ln -s $value final/$key || :;
         done
 
     - name: Upload final Pages artifact
