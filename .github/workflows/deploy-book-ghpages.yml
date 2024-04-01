@@ -4,6 +4,7 @@ name: deploy-book
 # https://jupyterbook.org/en/stable/publish/gh-pages.html
 
 env:
+  CI: false
   PRIMARY_BRANCH: main
   BRANCH_ALIASES: '{"draft": "second"}'
   BRANCHES_TO_DEPLOY: '["main"]'
