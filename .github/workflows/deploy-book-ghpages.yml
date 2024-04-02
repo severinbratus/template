@@ -127,7 +127,9 @@ jobs:
       run: |
         GLOBIGNORE=".:.."
         # -i leads to a prompt in case of conflict, => a timeout
-        cp -irv final/$PRIMARY_BRANCH/* final/
+        if [ -d final/$PRIMARY_BRANCH ]; then
+          cp -irv final/$PRIMARY_BRANCH/* final/
+        fi
         ls -a final/
 
     - name: Symlink branch aliases
