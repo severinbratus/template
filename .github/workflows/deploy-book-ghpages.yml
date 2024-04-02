@@ -25,7 +25,7 @@ env:
   # Space-separated list of alias-rules, e.g. 'draft:main alias:really-long-branch-name'
   # By default, `draft` links to `main`.
   # If no aliases are wanted, BRANCH_ALIASES may be set to ' ' (space).
-  BRANCH_ALIASES: ${{ vars.BRANCH_ALIASES != '' && vars.BRANCH_ALIASES || 'draft:main' }}
+  BRANCH_ALIASES: ${{ vars.BRANCH_ALIASES != '' && vars.BRANCH_ALIASES || 'draft:main book:publish' }}
   # Space-separated list of branch names, e.g. 'main second third'.
   # By default, deploy all branches. This is indicated by '*'.
   BRANCHES_TO_DEPLOY: ${{ vars.BRANCHES_TO_DEPLOY != '' && vars.BRANCHES_TO_DEPLOY || '*' }}
@@ -48,7 +48,7 @@ jobs:
         if [ "$BRANCHES_TO_DEPLOY" == '*' ]; then
           branches=$(git branch -r | sed 's,\s*origin/,,g' | jq -Rn '[inputs]')
         else
-          branches=$(echo $BRANCHES_TO_DEPLOY | tr ' ' '\n' | jq -Rn '[inputs]')
+          branches=$(echo $BRANCHES_TO_DEPLOY | tr ' ' '\n' | grep -E '\S' | jq -Rn '[inputs]')
         fi
         echo "branches=$(echo $branches)" >> $GITHUB_OUTPUT
 
