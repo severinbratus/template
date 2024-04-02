@@ -33,10 +33,10 @@ jobs:
         # Another value for the primary branch may be set, as explained here:
         # https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
         # The variable name is PRIMARY_BRANCH, and a value is that of your choice.
-        ${PRIMARY_BRANCH:=publish}
+        : ${PRIMARY_BRANCH:=publish}
     - name: Set BRANCH_ALIASES default, if not set
       run: |
-        ${BRANCH_ALIASES:='{"draft": "main"}'}
+        : ${BRANCH_ALIASES:='{"draft": "main"}'}
     - id: set-branches
       name: Set branches
       run: |
