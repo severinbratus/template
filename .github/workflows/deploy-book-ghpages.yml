@@ -34,9 +34,11 @@ jobs:
         # https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
         # The variable name is PRIMARY_BRANCH, and a value is that of your choice.
         : ${PRIMARY_BRANCH:=publish}
+        echo $PRIMARY_BRANCH
     - name: Set BRANCH_ALIASES default, if not set
       run: |
         : ${BRANCH_ALIASES:='{"draft": "main"}'}
+        echo $BRANCH_ALIASES
     - id: set-branches
       name: Set branches
       run: |
@@ -124,6 +126,7 @@ jobs:
       run: |
         GLOBIGNORE=".:.."
         # -i leads to a prompt in case of conflict, => a timeout
+        echo PRIMARY_BRANCH=$PRIMARY_BRANCH
         cp -irv final/$PRIMARY_BRANCH/* final/
         ls -a final/
 
