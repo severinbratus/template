@@ -16,11 +16,17 @@ on:
     # - some-subfolder/**
   workflow_dispatch:
 
+# Inherit configuration variables in the environment, or assign default values.
+# Configuration variables may be set as explained here:
+# https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
 env:
-  PRIMARY_BRANCH: ${{ vars.PRIMARY_BRANCH != '' && vars.PRIMARY_BRANCH || 'main' }}
-  BRANCH_ALIASES: '{"draft": "second"}'
-  # BRANCHES_TO_DEPLOY: '["main"]'
-
+  # `publish` as primary by default
+  PRIMARY_BRANCH: ${{ vars.PRIMARY_BRANCH != '' && vars.PRIMARY_BRANCH || 'publish' }}
+  # Space-separated list of alias-rules, e.g. 'draft:main alias:really-long-branch-name'
+  BRANCH_ALIASES: ${{ vars.BRANCH_ALIASES != '' && vars.BRANCH_ALIASES || 'draft:main' }}
+  # Space-separated list of branch names, e.g. 'main second third'.
+  # By default, peploy all branches. This is indicated by '*'.
+  BRANCHES_TO_DEPLOY: ${{ vars.BRANCHES_TO_DEPLOY != '' && vars.BRANCHES_TO_DEPLOY || '*' }}
 
 jobs:
   get-branches:
@@ -37,10 +43,10 @@ jobs:
     - id: set-branches
       name: Set branches
       run: |
-        if [[ -z $BRANCHES_TO_DEPLOY ]]; then
+        if [ "$BRANCHES_TO_DEPLOY" == '*' ]; then
           branches=$(git branch -r | sed 's,\s*origin/,,g' | jq -Rn '[inputs]')
         else
-          branches=$BRANCHES_TO_DEPLOY
+          branches=$(echo $BRANCHES_TO_DEPLOY | tr ' ' '\n' | jq -Rn '[inputs]')
         fi
         echo "branches=$(echo $branches)" >> $GITHUB_OUTPUT
 
@@ -106,20 +112,6 @@ jobs:
       pages: write
       id-token: write
     steps:
-    # - name: Set PRIMARY_BRANCH default, if not set
-    #   run: |
-    #     # The default primary branch is `publish`.
-    #     # Another value for the primary branch may be set, as explained here:
-    #     # https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
-    #     # The variable name is PRIMARY_BRANCH, and a value is that of your choice.
-    #     : ${PRIMARY_BRANCH:=publish}
-    #     echo $PRIMARY_BRANCH
-
-    # - name: Set BRANCH_ALIASES default, if not set
-    #   run: |
-    #     : ${BRANCH_ALIASES:='{"draft": "main"}'}
-    #     echo $BRANCH_ALIASES
-
     - uses: actions/checkout@v4
 
     - run: |
@@ -140,10 +132,11 @@ jobs:
 
     - name: Symlink branch aliases
       run: |
-        echo $BRANCH_ALIASES | jq -r 'to_entries[] | [.key, .value] | @tsv' |
-        while IFS=$'\t' read -r key value; do
+        echo $BRANCH_ALIASES | tr ' ' '\n' |
+        while IFS=':' read -r key value; do
           # If the target branch is to be deployed, make symlink to it.
-          if echo $BRANCHES_TO_DEPLOY | jq -r '@tsv' | grep "^$value$"; then
+          if [ "$BRANCHES_TO_DEPLOY" == "*" ] || echo $BRANCHES_TO_DEPLOY | tr ' ' '\n' | grep "^$value$"; then
+            echo link $key -> $value
             ln -s $value final/$key
           fi
         done
