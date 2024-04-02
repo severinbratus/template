@@ -16,6 +16,12 @@ on:
     # - some-subfolder/**
   workflow_dispatch:
 
+env:
+  PRIMARY_BRANCH: ${{ vars.PRIMARY_BRANCH != '' && vars.PRIMARY_BRANCH || 'main' }}
+  BRANCH_ALIASES: '{"draft": "second"}'
+  # BRANCHES_TO_DEPLOY: '["main"]'
+
+
 jobs:
   get-branches:
     runs-on: ubuntu-latest
@@ -100,19 +106,19 @@ jobs:
       pages: write
       id-token: write
     steps:
-    - name: Set PRIMARY_BRANCH default, if not set
-      run: |
-        # The default primary branch is `publish`.
-        # Another value for the primary branch may be set, as explained here:
-        # https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
-        # The variable name is PRIMARY_BRANCH, and a value is that of your choice.
-        : ${PRIMARY_BRANCH:=publish}
-        echo $PRIMARY_BRANCH
-        
-    - name: Set BRANCH_ALIASES default, if not set
-      run: |
-        : ${BRANCH_ALIASES:='{"draft": "main"}'}
-        echo $BRANCH_ALIASES
+    # - name: Set PRIMARY_BRANCH default, if not set
+    #   run: |
+    #     # The default primary branch is `publish`.
+    #     # Another value for the primary branch may be set, as explained here:
+    #     # https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
+    #     # The variable name is PRIMARY_BRANCH, and a value is that of your choice.
+    #     : ${PRIMARY_BRANCH:=publish}
+    #     echo $PRIMARY_BRANCH
+
+    # - name: Set BRANCH_ALIASES default, if not set
+    #   run: |
+    #     : ${BRANCH_ALIASES:='{"draft": "main"}'}
+    #     echo $BRANCH_ALIASES
 
     - uses: actions/checkout@v4
 
@@ -129,7 +135,6 @@ jobs:
       run: |
         GLOBIGNORE=".:.."
         # -i leads to a prompt in case of conflict, => a timeout
-        echo PRIMARY_BRANCH=$PRIMARY_BRANCH
         cp -irv final/$PRIMARY_BRANCH/* final/
         ls -a final/
 
