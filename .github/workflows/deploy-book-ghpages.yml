@@ -55,6 +55,7 @@ jobs:
   build-books:
     runs-on: ubuntu-latest
     needs: get-branches
+    if: ${{ needs.get-branches.outputs.branches != '[]' }}
     permissions:
       pages: write
       id-token: write
