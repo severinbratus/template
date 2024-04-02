@@ -3,12 +3,6 @@ name: deploy-book
 # Based on:
 # https://jupyterbook.org/en/stable/publish/gh-pages.html
 
-env:
-  CI: false
-  PRIMARY_BRANCH: main
-  BRANCH_ALIASES: '{"draft": "second"}'
-  BRANCHES_TO_DEPLOY: '["main"]'
-
 # Run on a push to any branch, then deploy books from all branches.
 on:
   push:
@@ -33,6 +27,16 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
+    - name: Set PRIMARY_BRANCH default, if not set
+      run:
+        # The default primary branch is `publish`.
+        # Another value for the primary branch may be set, as explained here:
+        # https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
+        # The variable name is PRIMARY_BRANCH, and a value is that of your choice.
+        ${PRIMARY_BRANCH:=publish}
+    - name: Set BRANCH_ALIASES default, if not set
+      run:
+        ${BRANCH_ALIASES:='{"draft": "main"}'}
     - id: set-branches
       name: Set branches
       run: |
@@ -41,7 +45,6 @@ jobs:
         else
           branches=$BRANCHES_TO_DEPLOY
         fi
-        echo $branches
         echo "branches=$(echo $branches)" >> $GITHUB_OUTPUT
 
   build-books:
@@ -126,7 +129,6 @@ jobs:
 
     - name: Symlink branch aliases
       run: |
-        set -x
         echo $BRANCH_ALIASES | jq -r 'to_entries[] | [.key, .value] | @tsv' |
         while IFS=$'\t' read -r key value; do
           # If the target branch is to be deployed, make symlink to it.
