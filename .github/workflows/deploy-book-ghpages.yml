@@ -27,18 +27,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-    - name: Set PRIMARY_BRANCH default, if not set
-      run: |
-        # The default primary branch is `publish`.
-        # Another value for the primary branch may be set, as explained here:
-        # https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
-        # The variable name is PRIMARY_BRANCH, and a value is that of your choice.
-        : ${PRIMARY_BRANCH:=publish}
-        echo $PRIMARY_BRANCH
-    - name: Set BRANCH_ALIASES default, if not set
-      run: |
-        : ${BRANCH_ALIASES:='{"draft": "main"}'}
-        echo $BRANCH_ALIASES
+
     - id: set-branches
       name: Set branches
       run: |
@@ -111,6 +100,20 @@ jobs:
       pages: write
       id-token: write
     steps:
+    - name: Set PRIMARY_BRANCH default, if not set
+      run: |
+        # The default primary branch is `publish`.
+        # Another value for the primary branch may be set, as explained here:
+        # https://docs.github.com/en/actions/learn-github-actions/variables#creating-configuration-variables-for-a-repository
+        # The variable name is PRIMARY_BRANCH, and a value is that of your choice.
+        : ${PRIMARY_BRANCH:=publish}
+        echo $PRIMARY_BRANCH
+        
+    - name: Set BRANCH_ALIASES default, if not set
+      run: |
+        : ${BRANCH_ALIASES:='{"draft": "main"}'}
+        echo $BRANCH_ALIASES
+
     - uses: actions/checkout@v4
 
     - run: |
