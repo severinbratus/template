@@ -23,9 +23,11 @@ env:
   # `publish` as primary by default
   PRIMARY_BRANCH: ${{ vars.PRIMARY_BRANCH != '' && vars.PRIMARY_BRANCH || 'publish' }}
   # Space-separated list of alias-rules, e.g. 'draft:main alias:really-long-branch-name'
+  # By default, `draft` links to `main`.
+  # If no aliases are wanted, BRANCH_ALIASES may be set to ' ' (space)
   BRANCH_ALIASES: ${{ vars.BRANCH_ALIASES != '' && vars.BRANCH_ALIASES || 'draft:main' }}
   # Space-separated list of branch names, e.g. 'main second third'.
-  # By default, peploy all branches. This is indicated by '*'.
+  # By default, deploy all branches. This is indicated by '*'.
   BRANCHES_TO_DEPLOY: ${{ vars.BRANCHES_TO_DEPLOY != '' && vars.BRANCHES_TO_DEPLOY || '*' }}
 
 jobs:
