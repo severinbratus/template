@@ -48,7 +48,7 @@ jobs:
         if [ "$BRANCHES_TO_DEPLOY" == '*' ]; then
           branches=$(git branch -r | sed 's,\s*origin/,,g' | jq -Rn '[inputs]')
         else
-          branches=$(echo $BRANCHES_TO_DEPLOY | tr ' ' '\n' | grep -E '\S' | jq -Rn '[inputs]')
+          branches=$(echo "$BRANCHES_TO_DEPLOY" | tr ' ' '\n' | grep -E '\S' | jq -Rn '[inputs]')
         fi
         echo "branches=$(echo $branches)" >> $GITHUB_OUTPUT
 
