@@ -102,7 +102,7 @@ jobs:
 
     - name: Clean branch name of disallowed characters
       run: |
-        echo "MATRIX_BRANCH_NAME_CLEAN=$(echo ${{ matrix.branch }} | tr -d tr -d '":<>|*?\r\n\/\\')" >> $GITHUB_ENV
+        echo "MATRIX_BRANCH_NAME_CLEAN=$(echo ${{ matrix.branch }} | tr -d '":<>|*?\r\n\/\\')" >> $GITHUB_ENV
         
       # env:
       #   MATRIX_BRANCH_NAME: ${{ matrix.branch }}
