@@ -1,3 +1,17 @@
+name: deploy-book-caller
+
+on:
+  push:
+    branches:
+    - '**'
+    # If your git repository has the Jupyter Book within some-subfolder next to
+    # unrelated files, you can make this run only if a file within that specific
+    # folder has been modified.
+    #
+    # paths:
+    # - some-subfolder/**
+  workflow_dispatch:
+
 call-workflow:
   uses: severinbratus/template/.github/workflows/deploy-book-ghpages.yml@main
   secrets: inherit
