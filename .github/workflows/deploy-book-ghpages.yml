@@ -3,18 +3,8 @@ name: deploy-book
 # Based on:
 # https://jupyterbook.org/en/stable/publish/gh-pages.html
 
-# Run on a push to any branch, then deploy books from all branches.
 on:
-  push:
-    branches:
-    - '**'
-    # If your git repository has the Jupyter Book within some-subfolder next to
-    # unrelated files, you can make this run only if a file within that specific
-    # folder has been modified.
-    #
-    # paths:
-    # - some-subfolder/**
-  workflow_dispatch:
+  workflow_call:
 
 # Inherit configuration variables in the environment, or assign default values.
 # Configuration variables may be set as explained here:
@@ -109,9 +99,6 @@ jobs:
       run: |
         echo "MATRIX_BRANCH_NAME_CLEAN=$(echo ${{ matrix.branch }} | tr '/":<>|*?\/\\' '-')" >> $GITHUB_ENV
         
-      # env:
-      #   MATRIX_BRANCH_NAME: ${{ matrix.branch }}
-
     - name: Upload the built book HTML as an artifact
       uses: actions/upload-artifact@v4
       with:

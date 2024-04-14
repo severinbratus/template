@@ -1,0 +1,8 @@
+call-workflow:
+  uses: severinbratus/template/.github/workflows/deploy-book-ghpages.yml@main
+  secrets: inherit
+  permissions:
+    contents: read
+    pages: write
+    id-token: write
+
