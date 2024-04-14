@@ -43,9 +43,7 @@ jobs:
         echo "$branches" > raw.txt
         echo "$branches" | tr '/":<>|*?\/\\' '-' > clean.txt
         paste -d ' ' raw.txt clean.txt | sed 's/ / -> /g'
-        echo $branches
         branches=$(echo "$branches" | jq -Rn '[inputs]')
-        echo $branches
         echo "branches=$(echo $branches)" >> $GITHUB_OUTPUT
         
 
