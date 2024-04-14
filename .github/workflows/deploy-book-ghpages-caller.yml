@@ -12,11 +12,12 @@ on:
     # - some-subfolder/**
   workflow_dispatch:
 
-call-workflow:
-  uses: severinbratus/template/.github/workflows/deploy-book-ghpages.yml@main
-  secrets: inherit
-  permissions:
-    contents: read
-    pages: write
-    id-token: write
+jobs: 
+  call-workflow:
+    uses: severinbratus/template/.github/workflows/deploy-book-ghpages.yml@main
+    secrets: inherit
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
 
