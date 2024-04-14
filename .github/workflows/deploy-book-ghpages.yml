@@ -41,7 +41,7 @@ jobs:
           branches=$(echo "$BRANCHES_TO_DEPLOY" | tr ' ' '\n' | grep -E '\S')
         fi
         echo "$branches" > raw.txt
-        echo "$branches" | tr '/":<>|*?\/\\' ' ' > clean.txt
+        echo "$branches" | tr '/":<>|*?\/\\' '-' > clean.txt
         paste -d ' ' raw.txt clean.txt | sed 's/ / -> /g'
         branches=$(echo "$branches" | jq -Rn '[inputs]')
         echo "branches=$(echo "$branches")" >> $GITHUB_OUTPUT
