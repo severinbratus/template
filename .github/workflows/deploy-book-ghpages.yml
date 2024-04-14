@@ -23,7 +23,7 @@ env:
 jobs:
   get-branches:
     steps:
-      run: echo hello world
+      - run: echo hello world
 
 permissions:
   contents: read
